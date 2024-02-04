@@ -43,7 +43,8 @@ export const action = async ({
 
   if(response.ok){
     const data = await response.json()
-    console.log(data)
+
+    console.log("from epxort ",data.data.bulkOperationRunQuery.userErrors)
     return redirect("/app/exportresult");
   }
 

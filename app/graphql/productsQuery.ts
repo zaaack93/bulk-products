@@ -1,8 +1,8 @@
 export const productsQuery = `
   {
     products {
-      node {
-        edges {
+      edges {
+        node {
           handle
           id
           descriptionHtml
