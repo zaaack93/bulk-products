@@ -84,10 +84,10 @@ const ExportForm = (props: Props) => {
   return (
     <Page fullWidth>
       <ui-title-bar title="New Export">
-      <button onClick="console.log('Secondary action')">Back</button>
-      <button variant="primary" onClick={createExport}>
-        Export
-      </button>
+        <button onClick="console.log('Secondary action')">Back</button>
+        <button variant="primary" onClick={createExport}>
+          Export
+        </button>
       </ui-title-bar>
       <Layout>
         <Layout.Section>
