@@ -2,7 +2,7 @@
 
 client_id = "bfe15c1c772c502c879741ada9a1942e"
 name = "bulk-products"
-application_url = "https://tech-marking-heather-insurance.trycloudflare.com"
+application_url = "https://blast-there-accomplish-cbs.trycloudflare.com"
 embedded = true
 
 [build]
@@ -15,9 +15,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://tech-marking-heather-insurance.trycloudflare.com/auth/callback",
-  "https://tech-marking-heather-insurance.trycloudflare.com/auth/shopify/callback",
-  "https://tech-marking-heather-insurance.trycloudflare.com/api/auth/callback"
+  "https://blast-there-accomplish-cbs.trycloudflare.com/auth/callback",
+  "https://blast-there-accomplish-cbs.trycloudflare.com/auth/shopify/callback",
+  "https://blast-there-accomplish-cbs.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
