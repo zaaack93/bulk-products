@@ -11,6 +11,9 @@ import {
 } from "@shopify/polaris";
 import React, { useEffect, useState } from "react";
 import { authenticate } from "~/shopify.server";
+import Papa from 'papaparse';
+import axios from "axios";
+
 
 type bulkOperation = {
   id: String;
@@ -19,6 +22,7 @@ type bulkOperation = {
   format: String;
   createdAt: String;
   completedAt: String;
+  objectCount: Number;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -36,6 +40,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         fileSize
         partialDataUrl
         objectCount
+        completedAt
       }
     }
   `);
@@ -73,6 +78,26 @@ function ExportResult({}) {
     }
   }, [fetcher.data]);
 
+  const downloadData = async () => {
+      try {
+        const response = await axios.get(pollingData.url.toString());
+        const {data} = response;
+
+        const jsonData = data.split('\n').filter(Boolean).map(JSON.parse);
+
+        const csv = Papa.unparse(jsonData);
+        const csvData = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const csvURL = window.URL.createObjectURL(csvData);
+        const tempLink = document.createElement('a');
+
+        tempLink.href = csvURL;
+        tempLink.setAttribute('download', 'export.csv');
+        tempLink.click();
+      } catch (error) {
+        console.error('Error:', error);
+      }
+  };
+
   return (
     <Page>
       <ui-title-bar title="Bulky Export">
@@ -104,13 +129,23 @@ function ExportResult({}) {
           </Layout.Section>
         </Layout>
       )}
-      <p>Export result</p>
-      <p>Id: {pollingData.id}</p>
-      <p>Status: {pollingData.status}</p>
-      <p>Url: {pollingData.url}</p>
-      <p>Format: {pollingData.format}</p>
-      <p>Created at: {pollingData.createdAt}</p>
-      <p>Completed at: {pollingData.completedAt}</p>
+
+    {pollingData.status === "COMPLETED" && (
+      <Layout>
+        <Layout.Section>
+          <Banner title="Download completed" tone="success"  action={{content: 'Download exported data', onAction:downloadData}}>
+            <BlockStack gap="500">
+              <List type="bullet">
+                <List.Item>Id: {pollingData.id}</List.Item>
+                <List.Item>Lign numbers: {pollingData.objectCount.toString()}</List.Item>
+                <List.Item>CreateAt: {pollingData.createdAt}</List.Item>
+                <List.Item>CompletedAt: {pollingData.completedAt}</List.Item>
+              </List>
+            </BlockStack>
+          </Banner>
+        </Layout.Section>
+      </Layout>
+    )}
     </Page>
   );
 }
